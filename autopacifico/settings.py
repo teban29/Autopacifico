@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'django_extensions',
     'ruleta',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -122,3 +123,15 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+SESSION_ENGINE = "django.contrib.sessions.backends.db"  # Asegúrate de usar la base de datos para sesiones
+SESSION_COOKIE_AGE = 3600  # Sesión expira en 1 hora
+SESSION_SAVE_EVERY_REQUEST = True  # Guarda la sesión en cada solicitud
+
+
+# Redirigir al dashboard después de iniciar sesión
+LOGIN_URL = '/admin/login/'
+
+LOGIN_REDIRECT_URL = '/dashboard/'  
+LOGOUT_REDIRECT_URL = '/admin/login/'  # Opcional: Redirige al login después de cerrar sesión

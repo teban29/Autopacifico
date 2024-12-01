@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CRUD de Premios</title>
+  </head>
+  <body>
+    <h1>CRUD de Premios</h1>
+    <ul>
+      {% for premio in object_list %}
+      <li>{{ premio.nombre }} - {{ premio.probabilidad }}%</li>
+      {% endfor %}
+    </ul>
+  </body>
+</html>

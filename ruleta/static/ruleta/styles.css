@@ -138,18 +138,135 @@ body {
     background-color: #c0392b; /* Color más oscuro al pulsar */
 }
 
+
+.mensaje-premio {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #ffd700; /* Color amarillo */
+    color: #ffffff; /* Texto blanco */
+    font-size: 2rem;
+    font-weight: bold;
+    padding: 20px 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    opacity: 1; /* Mantener siempre visible */
+    z-index: 1000;
+}
+
+.mensaje-sin-premio {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #e74c3c; /* Color rojo */
+    color: #ffffff; /* Texto blanco */
+    font-size: 2rem;
+    font-weight: bold;
+    padding: 20px 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    opacity: 1; /* Mantener siempre visible */
+    z-index: 1000;
+}
+
+
+/* Animación de aparición */
+@keyframes aparecer {
+    from {
+        transform: translate(-50%, -60%);
+        opacity: 0;
+    }
+    to {
+        transform: translate(-50%, -50%);
+        opacity: 1;
+    }
+}
+
+/* Animación de desaparición */
+@keyframes desaparecer {
+    to {
+        transform: translate(-50%, -40%);
+        opacity: 0;
+    }
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7); /* Fondo oscuro */
+    z-index: 999;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(10px); /* Difuminado */
+}
+
+.overlay.mostrar {
+    display: flex;
+}
+
+/* Ocultar por defecto */
+.oculto {
+    display: none;
+}
+
 /* Media query para pantallas móviles */
 @media (max-width: 600px) {
     .container {
-        width: 300px;
-        height: 300px;
+        width: 80vw;
+        height: 80vw;
         border: 10px solid #ecf0f1;
     }
 
     .container div {
         width: 50%;
+        font-size: 10px;
+        left: 26%; /* Mueve los segmentos un poco más a la izquierda */
+    }
+    .container .one {
+        background-color: #3498db; /* Azul elegante */
         left: 50%;
-        font-size: 12px;
+        font-size: 9px; /* Texto más pequeño y ajustado */
+    
+    }
+    .container .two {
+        background-color: #f1c40f; /* Amarillo */
+        transform: rotate(45deg);
+        
+    }
+    .container .three {
+        background-color: #e74c3c; /* Rojo brillante */
+        transform: rotate(90deg);
+        font-size: 9px;
+    }
+    .container .four {
+        background-color: #2ecc71; /* Verde suave */
+        transform: rotate(135deg);
+    }
+    .container .five {
+        background-color: #1abc9c; /* Turquesa */
+        transform: rotate(180deg);
+        font-size: 9px;
+    }
+    .container .six {
+        background-color: #8e44ad; /* Púrpura */
+        transform: rotate(225deg);
+    }
+    .container .seven {
+        background-color: #d35400; /* Naranja quemado */
+        transform: rotate(270deg);
+        font-size: 9px;
+    }
+    .container .eight {
+        background-color: #c0392b; /* Rojo oscuro */
+        transform: rotate(315deg);
     }
 
     #spin {
@@ -165,5 +282,10 @@ body {
 
     .arrow::before {
         font-size: 30px;
+    }
+
+    .arrow-container {
+        top: 19rem;
+        left: 34.5%;
     }
 }

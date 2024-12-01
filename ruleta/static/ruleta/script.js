@@ -1,5 +1,6 @@
 let container = document.querySelector(".container");
 let btn = document.getElementById("spin");
+const overlay = document.getElementById("overlay");
 
 // Configurar probabilidades (en el mismo orden que las casillas)
 let premios = [
@@ -13,6 +14,7 @@ let premios = [
     { nombre: "Bono $200,000", probabilidad: 2 },
 ];
 
+// Función para seleccionar un premio basado en las probabilidades
 function seleccionarPremio() {
     let total = premios.reduce((sum, premio) => sum + premio.probabilidad, 0);
     let random = Math.random() * total;
@@ -26,6 +28,11 @@ function seleccionarPremio() {
     }
 }
 
+// Si ya hay un resultado, deshabilitar interacción y mostrar overlay
+if (btn.disabled) {
+    overlay.classList.add("mostrar");
+}
+
 btn.onclick = function () {
     let seleccionado = seleccionarPremio(); // Determina el índice del premio
     let gradosPorSegmento = 360 / premios.length; // Grados de cada segmento
@@ -36,30 +43,60 @@ btn.onclick = function () {
     // Rotar la ruleta
     container.style.transform = `rotate(${rotacionFinal}deg)`;
 
-    setTimeout(() => {
-        // Mostrar el premio seleccionado después de la animación
-        console.log(`Premio seleccionado: ${premios[seleccionado].nombre}`);
+    // Bloquear el botón inmediatamente
+    btn.disabled = true;
 
-        // Guardar resultado en Django
+    // Mostrar el mensaje después de la animación de la ruleta
+    setTimeout(() => {
+        const premioGanado = premios[seleccionado].nombre;
+
+        // Mostrar mensaje dependiendo del premio
+        if (premioGanado === "Gracias por participar") {
+            mostrarMensajeSinPremio("😞 Gracias por participar, ¡mejor suerte la próxima vez!");
+        } else {
+            mostrarMensajePremio(`🎉 ¡Felicidades! Ganaste ${premioGanado} 🎉`);
+        }
+
+        // Retrasar el efecto de difuminado hasta después de la animación
+        setTimeout(() => {
+            overlay.classList.add("mostrar");
+        }, 10); // 1 segundo después del mensaje
+
+        // Guardar resultado en el servidor
         fetch(resultadoUrl, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
                 "X-CSRFToken": document.querySelector('[name=csrfmiddlewaretoken]').value,
             },
-            body: JSON.stringify({ premio: premios[seleccionado].nombre }),
+            body: JSON.stringify({ premio: premioGanado }),
         })
             .then(response => {
                 if (response.ok) {
-                    console.log("Resultado enviado correctamente al servidor.");
-                    return response.json(); // Obtener la respuesta del servidor
+                    return response.json();
                 } else {
                     console.error("Error al enviar el resultado al servidor.");
                 }
             })
             .then(data => {
-                console.log("Respuesta del servidor:", data);
+                console.log("Resultado guardado:", data);
             })
-            .catch(error => console.error("Error en la solicitud:", error));
-    }, 5000); // Espera el tiempo de la animación antes de enviar el resultado
+            .catch(error => console.error("Error:", error));
+    }, 5000); // Tiempo de espera por la animación de la ruleta
 };
+
+// Función para mostrar mensaje de premio
+function mostrarMensajePremio(mensaje) {
+    const mensajePremio = document.getElementById("mensaje-premio");
+    mensajePremio.textContent = mensaje;
+    mensajePremio.classList.remove("oculto");
+    mensajePremio.classList.add("mostrar");
+}
+
+// Función para mostrar mensaje de sin premio
+function mostrarMensajeSinPremio(mensaje) {
+    const mensajeSinPremio = document.getElementById("mensaje-sin-premio");
+    mensajeSinPremio.textContent = mensaje;
+    mensajeSinPremio.classList.remove("oculto");
+    mensajeSinPremio.classList.add("mostrar");
+}

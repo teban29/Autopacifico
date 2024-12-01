@@ -16,8 +16,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from ruleta import views  # Cambia "ruleta" por el nombre de tu aplicación si es diferente.
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', include('ruleta.urls')),  # Incluir las rutas de la aplicación 'ruleta'
+    path('', views.redirect_to_admin_login, name='redirect_to_admin_login'),  # Redirige al login
+    path('dashboard/', views.dashboard, name='dashboard'),  # Ruta para el dashboard
+    path('ruleta/', include('ruleta.urls')),  # Rutas de la aplicación
+    path('admin/', admin.site.urls),  # Rutas del admin
 ]

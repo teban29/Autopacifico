@@ -8,13 +8,29 @@
     <link rel="stylesheet" href="{% static 'ruleta/styles.css' %}" />
   </head>
   <body>
-    <!-- Agregar el token CSRF aquí -->
-    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" />
+    <!-- Token CSRF necesario -->
+    <input
+      type="hidden"
+      id="csrf_token"
+      name="csrfmiddlewaretoken"
+      value="{{ csrf_token }}"
+    />
 
-    <button id="spin">Girar</button>
+    <!-- Overlay para bloquear interacción -->
+    <div
+      id="overlay"
+      class="overlay {% if resultado %}mostrar{% else %}oculto{% endif %}"
+    ></div>
+
+    <!-- Botón para girar -->
+    <button id="spin" {% if resultado %}disabled{% endif %}>Girar</button>
+
+    <!-- Flecha -->
     <div class="arrow-container">
       <span class="arrow"></span>
     </div>
+
+    <!-- Ruleta -->
     <div class="container">
       <div class="one">Gracias por participar</div>
       <div class="two">Bono $50,000</div>
@@ -25,6 +41,23 @@
       <div class="seven">Gracias por participar</div>
       <div class="eight">Bono $200,000</div>
     </div>
+
+    <!-- Mensajes -->
+    <div
+      id="mensaje-premio"
+      class="mensaje-premio {% if resultado and resultado != 'Gracias por participar' %}mostrar{% else %}oculto{% endif %}"
+    >
+      {% if resultado and resultado != "Gracias por participar" %} 🎉
+      ¡Felicidades! Ganaste {{ resultado }} 🎉 {% endif %}
+    </div>
+    <div
+      id="mensaje-sin-premio"
+      class="mensaje-sin-premio {% if resultado == 'Gracias por participar' %}mostrar{% else %}oculto{% endif %}"
+    >
+      {% if resultado == "Gracias por participar" %} 😞 Gracias por participar,
+      ¡mejor suerte la próxima vez! {% endif %}
+    </div>
+
     <script>
       const resultadoUrl = "{% url 'guardar_resultado' %}";
     </script>
