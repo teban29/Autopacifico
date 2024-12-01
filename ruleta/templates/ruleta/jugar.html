@@ -1,0 +1,33 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ruleta</title>
+    <link rel="stylesheet" href="{% static 'ruleta/styles.css' %}" />
+  </head>
+  <body>
+    <!-- Agregar el token CSRF aquí -->
+    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" />
+
+    <button id="spin">Girar</button>
+    <div class="arrow-container">
+      <span class="arrow"></span>
+    </div>
+    <div class="container">
+      <div class="one">Gracias por participar</div>
+      <div class="two">Bono $50,000</div>
+      <div class="three">Gracias por participar</div>
+      <div class="four">Bono $100,000</div>
+      <div class="five">Gracias por participar</div>
+      <div class="six">Bono $150,000</div>
+      <div class="seven">Gracias por participar</div>
+      <div class="eight">Bono $200,000</div>
+    </div>
+    <script>
+      const resultadoUrl = "{% url 'guardar_resultado' %}";
+    </script>
+    <script src="{% static 'ruleta/script.js' %}"></script>
+  </body>
+</html>

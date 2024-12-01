@@ -1,0 +1,169 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #2c3e50; /* Fondo más elegante */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.container {
+    width: 500px;
+    height: 500px;
+    background-color: #ccc;
+    border-radius: 50%;
+    border: 15px solid #ecf0f1; /* Bordes más suaves */
+    position: relative;
+    overflow: hidden;
+    transition: transform 5s cubic-bezier(0.25, 0.1, 0.25, 1); /* Movimiento más fluido */
+}
+
+.container div {    
+    height: 50%;
+    width: 200px;
+    position: absolute;
+    clip-path: polygon(100% 0, 50% 100%, 0 0);
+    transform: translateX(-50%);
+    transform-origin: bottom;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px; /* Texto más pequeño y ajustado */
+    font-weight: bold;
+    font-family: 'Arial', sans-serif;
+    color: #fff;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6); /* Sombras para legibilidad */
+    left: 135px;
+    writing-mode: vertical-rl;
+    line-height: 1.2;
+
+}
+
+.container .one {
+    background-color: #3498db; /* Azul elegante */
+    left: 50%;
+    font-size: 12px; /* Texto más pequeño y ajustado */
+
+}
+.container .two {
+    background-color: #f1c40f; /* Amarillo */
+    transform: rotate(45deg);
+}
+.container .three {
+    background-color: #e74c3c; /* Rojo brillante */
+    transform: rotate(90deg);
+    font-size: 12px;
+}
+.container .four {
+    background-color: #2ecc71; /* Verde suave */
+    transform: rotate(135deg);
+}
+.container .five {
+    background-color: #1abc9c; /* Turquesa */
+    transform: rotate(180deg);
+    font-size: 12px;
+}
+.container .six {
+    background-color: #8e44ad; /* Púrpura */
+    transform: rotate(225deg);
+}
+.container .seven {
+    background-color: #d35400; /* Naranja quemado */
+    transform: rotate(270deg);
+    font-size: 12px;
+}
+.container .eight {
+    background-color: #c0392b; /* Rojo oscuro */
+    transform: rotate(315deg);
+}
+
+.arrow-container {
+    position: absolute;
+    top: 12.5rem; /* Mueve la flecha más arriba */
+    rotate: -25deg; /* Rota la flecha */
+    left: 43.8%; /* Ajusta la posición horizontal */
+    transform-origin: center;
+    z-index: 10;
+}
+
+.arrow {
+    color: #fff;
+    font-size: 50px;
+    font-family: 'Arial', sans-serif;
+}
+
+.arrow::before {
+    content: "▼";
+    font-size: 50px;
+    color: #ecf0f1;
+}
+
+
+#spin {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    background-color: #f39c12; /* Botón naranja atractivo */
+    text-transform: uppercase;
+    border: 8px solid #fff;
+    font-weight: bold;
+    font-size: 18px; /* Tamaño de texto ajustado */
+    color: #fff;
+    width: 100px; /* Botón más grande */
+    height: 100px;
+    font-family: 'Arial', sans-serif;
+    border-radius: 50%;
+    cursor: pointer;
+    outline: none;
+    letter-spacing: 1px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3); /* Sombra elegante */
+    transition: transform 0.3s ease-in-out, background-color 0.3s;
+}
+
+#spin:hover {
+    background-color: #d35400; /* Color más oscuro al pasar el mouse */
+
+}
+
+#spin:active {
+    background-color: #c0392b; /* Color más oscuro al pulsar */
+}
+
+/* Media query para pantallas móviles */
+@media (max-width: 600px) {
+    .container {
+        width: 300px;
+        height: 300px;
+        border: 10px solid #ecf0f1;
+    }
+
+    .container div {
+        width: 50%;
+        left: 50%;
+        font-size: 12px;
+    }
+
+    #spin {
+        width: 70px;
+        height: 70px;
+        font-size: 14px;
+        border: 6px solid #fff;
+    }
+
+    .arrow {
+        font-size: 30px;
+    }
+
+    .arrow::before {
+        font-size: 30px;
+    }
+}
