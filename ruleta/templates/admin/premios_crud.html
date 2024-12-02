@@ -1,16 +1,37 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CRUD de Premios</title>
-  </head>
-  <body>
-    <h1>CRUD de Premios</h1>
-    <ul>
+{% extends 'base.html' %}
+
+{% block title %}CRUD Premios{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <h2>Lista de Premios</h2>
+  <a href="{% url 'crear_premio' %}" class="btn btn-primary mb-3">Crear Premio</a>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Descripción</th>
+        <th>Probabilidad</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
       {% for premio in object_list %}
-      <li>{{ premio.nombre }} - {{ premio.probabilidad }}%</li>
+      <tr>
+        <td>{{ premio.id }}</td>
+        <td>{{ premio.nombre }}</td>
+        <td>{{ premio.descripcion }}</td>
+        <td>{{ premio.probabilidad }}%</td>
+        <td>{{ premio.estado|yesno:"Activo,Inactivo" }}</td>
+        <td>
+          <a href="{% url 'editar_premio' premio.id %}" class="btn btn-warning btn-sm">Editar</a>
+          <a href="{% url 'eliminar_premio' premio.id %}" class="btn btn-danger btn-sm">Eliminar</a>
+        </td>
+      </tr>
       {% endfor %}
-    </ul>
-  </body>
-</html>
+    </tbody>
+  </table>
+</div>
+{% endblock %}

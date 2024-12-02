@@ -14,6 +14,7 @@ from django.contrib.auth.mixins import UserPassesTestMixin
 from django.contrib.auth.decorators import user_passes_test
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.decorators import user_passes_test
+from django.urls import reverse_lazy
 
 
 class RegistroClienteView(View):
@@ -135,16 +136,74 @@ def dashboard(request):
     return render(request, 'admin/dashboard.html', context)
 
 # CRUD Views
+#CRUD premios
 class PremiosCRUDView(UserPassesTestMixin, ListView):
     model = Premio
     template_name = 'admin/premios_crud.html'
     
     def test_func(self):
         return self.request.user.is_superuser
+    
+class CrearPremioView(UserPassesTestMixin, CreateView):
+    model = Premio
+    fields = ['nombre', 'descripcion', 'probabilidad', 'estado']
+    template_name = 'admin/crear_premio.html'
+    success_url = reverse_lazy('premios_crud')  # Redirige al CRUD de premios después de crear
 
-class ClientesCRUDView(UserPassesTestMixin, ListView):
+    def test_func(self):
+        return self.request.user.is_superuser  # Solo superusuarios pueden acceder
+    
+class EditarPremioView(UserPassesTestMixin, UpdateView):
+    model = Premio
+    fields = ['nombre', 'descripcion', 'probabilidad', 'estado']
+    template_name = 'admin/editar_premio.html'
+    success_url = reverse_lazy('premios_crud')
+
+    def test_func(self):
+        return self.request.user.is_superuser
+
+class EliminarPremioView(UserPassesTestMixin, DeleteView):
+    model = Premio
+    template_name = 'admin/eliminar_premio.html'  # Crea esta plantilla si es necesario
+    success_url = reverse_lazy('premios_crud')
+
+    def test_func(self):
+        # Permitir acceso solo a usuarios superusuarios
+        return self.request.user.is_superuser
+
+class ClientesListView(UserPassesTestMixin, ListView):
     model = Cliente
     template_name = 'admin/clientes_crud.html'
+    context_object_name = 'clientes'
+
+    def test_func(self):
+        return self.request.user.is_superuser
+
+# Crear cliente
+class CrearClienteView(UserPassesTestMixin, CreateView):
+    model = Cliente
+    fields = ['cedula', 'nombre', 'apellidos', 'numero_factura']
+    template_name = 'admin/crear_cliente.html'
+    success_url = reverse_lazy('clientes_crud')
+
+    def test_func(self):
+        return self.request.user.is_superuser
+
+# Editar cliente
+class EditarClienteView(UserPassesTestMixin, UpdateView):
+    model = Cliente
+    fields = ['cedula', 'nombre', 'apellidos', 'numero_factura']
+    template_name = 'admin/editar_cliente.html'
+    success_url = reverse_lazy('clientes_crud')
+
+    def test_func(self):
+        return self.request.user.is_superuser
+
+# Eliminar cliente
+class EliminarClienteView(UserPassesTestMixin, DeleteView):
+    model = Cliente
+    template_name = 'admin/eliminar_cliente.html'
+    success_url = reverse_lazy('clientes_crud')
 
     def test_func(self):
         return self.request.user.is_superuser

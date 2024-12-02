@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+  <h2 class="text-center">Editar Premio</h2>
+  <form method="post" class="mt-4">
+    {% csrf_token %}
+    <div class="mb-3">
+      <label for="id_nombre" class="form-label">Nombre</label>
+      {{ form.nombre }}
+    </div>
+    <div class="mb-3">
+      <label for="id_descripcion" class="form-label">Descripción</label>
+      {{ form.descripcion }}
+    </div>
+    <div class="mb-3">
+      <label for="id_probabilidad" class="form-label">Probabilidad</label>
+      {{ form.probabilidad }}
+    </div>
+    <div class="mb-3">
+      <label for="id_estado" class="form-label">Estado</label>
+      {{ form.estado }}
+    </div>
+    <button type="submit" class="btn btn-success">Guardar Cambios</button>
+    <a href="{% url 'premios_crud' %}" class="btn btn-secondary">Cancelar</a>
+  </form>
+</div>
+{% endblock %}
