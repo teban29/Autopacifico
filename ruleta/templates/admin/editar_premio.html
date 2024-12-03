@@ -2,27 +2,39 @@
 
 {% block content %}
 <div class="container mt-5">
-  <h2 class="text-center">Editar Premio</h2>
-  <form method="post" class="mt-4">
-    {% csrf_token %}
-    <div class="mb-3">
-      <label for="id_nombre" class="form-label">Nombre</label>
-      {{ form.nombre }}
+    <h2 class="text-center mb-4">Editar Premio</h2>
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card p-4 shadow-sm">
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <!-- Campos del formulario -->
+                    <div class="form-group mb-3">
+                        <label for="id_nombre" class="form-label">Nombre</label>
+                        {{ form.nombre }}
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="id_descripcion" class="form-label">Descripción</label>
+                        {{ form.descripcion }}
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="id_probabilidad" class="form-label">Probabilidad</label>
+                        {{ form.probabilidad }}
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="id_estado" class="form-label">Estado</label>
+                        {{ form.estado }}
+                    </div>
+
+                    <!-- Botones -->
+                    <div class="d-flex justify-content-between">
+                        <button type="submit" class="btn btn-success w-48">Guardar Cambios</button>
+                        <a href="{% url 'premios_crud' %}" class="btn btn-outline-secondary w-48 text-right">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
-    <div class="mb-3">
-      <label for="id_descripcion" class="form-label">Descripción</label>
-      {{ form.descripcion }}
-    </div>
-    <div class="mb-3">
-      <label for="id_probabilidad" class="form-label">Probabilidad</label>
-      {{ form.probabilidad }}
-    </div>
-    <div class="mb-3">
-      <label for="id_estado" class="form-label">Estado</label>
-      {{ form.estado }}
-    </div>
-    <button type="submit" class="btn btn-success">Guardar Cambios</button>
-    <a href="{% url 'premios_crud' %}" class="btn btn-secondary">Cancelar</a>
-  </form>
 </div>
 {% endblock %}

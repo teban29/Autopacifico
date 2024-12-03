@@ -9,7 +9,15 @@ class Cliente(models.Model):
     cedula = models.CharField(max_length=20, unique=True)
     nombre = models.CharField(max_length=100)
     apellidos = models.CharField(max_length=100)
-    numero_telefono = models.CharField(max_length=15, null=True, blank=True)  # Nuevo campo
+    numero_telefono = models.CharField(
+        max_length=15,
+        validators=[
+            RegexValidator(
+                regex=r'^\+?[0-9]{7,15}$',
+                message="El número de teléfono debe contener entre 7 y 15 dígitos, y puede incluir un '+' inicial."
+            )
+        ]
+    )  # Campo obligatorio
     fecha_creacion = models.DateTimeField(auto_now_add=True)  # Fecha de creación
     numero_factura = models.CharField(
         max_length=50,

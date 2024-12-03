@@ -1,8 +1,8 @@
 /* Estilos generales */
 body {
     font-family: 'Roboto', sans-serif;
-    background-color: #f8f9fa;
-    color: #343a40;
+    background-color: #ffffff; /* Gris claro para el fondo */
+    color: #212529; /* Gris oscuro para el texto */
     line-height: 1.6;
     margin: 0;
     padding: 0;
@@ -10,97 +10,233 @@ body {
 
 /* Navbar */
 .navbar {
+    background-color: #343a40; /* Gris oscuro */
+    color: #f8f9fa;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.navbar-brand {
-    display: flex;
-    align-items: center;
+.navbar .nav-link {
+    color: #f8f9fa; /* Texto blanco */
+    transition: color 0.3s ease;
+}
+
+.navbar .nav-link:hover {
+    color: #adb5bd; /* Gris claro */
+}
+
+.navbar .nav-item.active .nav-link {
+    font-weight: bold;
+    color: #ced4da !important; /* Gris claro */
 }
 
 .navbar-brand img {
     margin-right: 10px;
 }
 
-.navbar .nav-link {
-    color: #343a40;
-    transition: color 0.3s ease;
-}
-
-.navbar .nav-link:hover {
-    color: #0056b3;
-}
-
-.navbar .nav-item.active .nav-link {
-    font-weight: bold;
-    color: #007bff !important;
-}
-
-/* Botones de la barra de navegación */
-.btn-outline-primary {
-    color: #007bff;
-    border-color: #007bff;
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.btn-outline-primary:hover {
-    background-color: #007bff;
-    color: #ffffff;
-}
-
+/* Botones */
+.btn-outline-primary,
 .btn-outline-danger {
+    color: #ff0000;
+    border-color: #ff0000;
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+.btn-outline-primary:hover,
 .btn-outline-danger:hover {
-    background-color: #dc3545;
+    background-color: #ff0000;
     color: #ffffff;
 }
 
+.btn-primary,
+.btn-secondary {
+    background-color: #868686; /* Gris medio */
+    border: none;
+    color: #ffffff;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
 
+.btn-primary:hover,
+.btn-secondary:hover {
+    background-color: #495057; /* Gris más oscuro */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
 
-/* Título */
+/* Contenido principal */
 h2 {
     font-weight: bold;
-    color: #333333;
+    color: #343a40;
     text-align: center;
     margin-bottom: 30px;
 }
 
-/* Botones generales */
-.btn-primary, .btn-secondary {
-    font-weight: 500;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.btn-primary:hover {
-    background-color: #0056b3;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-}
-
-.btn-secondary:hover {
-    background-color: #6c757d;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+.container {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 /* Footer */
 .footer {
-    background-color: #f8f9fa;
-    color: #343a40;
+    background-color: #343a40;
+    color: #f8f9fa;
     padding: 20px 0;
     text-align: center;
     margin-top: 40px;
-    border-top: 1px solid #dee2e6;
+    border-top: 1px solid #495057;
 }
 
 .footer a {
-    color: #007bff;
+    color: #adb5bd;
     text-decoration: none;
 }
 
 .footer a:hover {
-    color: #0056b3;
+    color: #ffffff;
     text-decoration: underline;
+}
+
+/* Tablas */
+.table {
+    border: 1px solid #dee2e6;
+    margin-bottom: 1.5rem;
+    border-radius: 8px;
+}
+
+.table-hover tbody tr:hover {
+    background-color: #f8f9fa; /* Gris claro */
+}
+
+.thead-dark th {
+    background-color: #343a40; /* Gris oscuro */
+    color: #f8f9fa; /* Texto blanco */
+}
+
+/* Switch */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 34px;
+    height: 20px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.4s;
+    border-radius: 34px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 14px;
+    width: 14px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: 0.4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: #13bb1c;
+}
+
+input:checked + .slider:before {
+    transform: translateX(14px);
+}
+
+/* Ajustes para el formulario en columna */
+.card .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem; /* Espacio entre los campos */
+}
+
+label {
+    color: #495057;  /* Color oscuro para las etiquetas */
+    font-weight: bold;
+}
+
+.card .form-control {
+    padding: 10px;
+    font-size: 1rem;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.card .form-group input,
+.card .form-group select,
+.card .form-group textarea {
+    width: 100%;
+}
+
+/* Ajustes a los botones */
+.btn-primary,
+.btn-outline-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.btn-outline-secondary {
+    color: #6c757d;
+    border-color: #6c757d;
+}
+
+.btn-outline-secondary:hover {
+    background-color: #f8f9fa;
+    color: #6c757d;
+    border-color: #6c757d;
+}
+
+/* Ajustes a los botones de acción en el formulario */
+.btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+.w-48 {
+    width: 48%;
+}
+
+/* Card */
+.card {
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+}
+
+/* Estilos de los botones */
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.btn-outline-secondary {
+    justify-content: center;
+    text-align: center;
+    color: #ff0000;
+    border-color: #ff0000;
+}
+
+.btn-outline-secondary:hover {
+    background-color: #ff0000;
+    color: #ffffff;
+    border-color: #b60000;
 }
 
 /* Responsive */
@@ -108,5 +244,24 @@ h2 {
     .navbar-brand img {
         width: 70px;
         height: auto;
+    }
+
+    .container {
+        padding: 15px;
+    }
+
+    /* Form fields in small screens */
+    .card .form-group {
+        flex-direction: column;
+    }
+
+    /* Buttons stacked in small screens */
+    .d-flex {
+        flex-direction: column;
+    }
+
+    .d-flex .btn {
+        width: 100%;
+        margin-top: 10px;
     }
 }

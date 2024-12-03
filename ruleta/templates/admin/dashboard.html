@@ -1,12 +1,34 @@
-{% extends 'base.html' %} {% block title %}Dashboard{% endblock %}
+{% extends 'base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
 {% block content %}
 <div class="container mt-4">
-    <h2 class="mb-4 text-center">Dashboard de Administración</h2>
+
+    <!-- Barra superior con enlace para compartir/copiar -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Dashboard de Administración</h2>
+        <div class="input-group w-50">
+            <input 
+                type="text" 
+                class="form-control" 
+                value="http://127.0.0.1:8000/ruleta/registro/" 
+                id="linkToShare"
+                readonly
+            />
+            <button 
+                class="btn btn-outline-secondary" 
+                onclick="copyLink()"
+            >
+                Copiar Enlace
+            </button>
+        </div>
+    </div>
 
     <!-- Métricas rápidas -->
-    <div class="row g-4">
+    <div class="row g-4 mb-4">
         <div class="col-md-4">
-            <div class="card text-white bg-primary shadow">
+            <div class="card text-white bg-primary shadow-sm">
                 <div class="card-body">
                     <h5 class="card-title">Total de Clientes</h5>
                     <p class="card-text display-4">{{ total_clientes }}</p>
@@ -14,7 +36,7 @@
             </div>
         </div>
         <div class="col-md-4">
-            <div class="card text-white bg-success shadow">
+            <div class="card text-white bg-success shadow-sm">
                 <div class="card-body">
                     <h5 class="card-title">Total de Premios Entregados</h5>
                     <p class="card-text display-4">{{ total_premios }}</p>
@@ -22,7 +44,7 @@
             </div>
         </div>
         <div class="col-md-4">
-            <div class="card text-white bg-warning shadow">
+            <div class="card text-white bg-warning shadow-sm">
                 <div class="card-body">
                     <h5 class="card-title">Premio Más Popular</h5>
                     <p class="card-text">{{ premio_mas_popular }}</p>
@@ -32,9 +54,9 @@
     </div>
 
     <!-- Gráficos -->
-    <div class="row g-4 mt-4">
+    <div class="row g-4">
         <div class="col-md-6">
-            <div class="card shadow">
+            <div class="card shadow-sm">
                 <div class="card-header bg-info text-white">
                     <h5 class="mb-0">Clientes Registrados por Día</h5>
                 </div>
@@ -44,7 +66,7 @@
             </div>
         </div>
         <div class="col-md-6">
-            <div class="card shadow">
+            <div class="card shadow-sm">
                 <div class="card-header bg-danger text-white">
                     <h5 class="mb-0">Distribución de Premios</h5>
                 </div>
@@ -54,23 +76,33 @@
             </div>
         </div>
     </div>
+
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
+    // Función para copiar el enlace
+    function copyLink() {
+        const link = document.getElementById("linkToShare");
+        link.select();
+        link.setSelectionRange(0, 99999); // Para dispositivos móviles
+        document.execCommand("copy");
+        alert("Enlace copiado: " + link.value);
+    }
+
     // Datos para Clientes por Día
     const clientesPorDiaData = {
         labels: {{ registros_por_fecha.labels| safe }},
-    datasets: [
-        {
-            label: "Clientes Registrados",
-            data: {{ registros_por_fecha.data | safe }},
-        backgroundColor: "rgba(54, 162, 235, 0.5)",
-        borderColor: "rgba(54, 162, 235, 1)",
-        borderWidth: 1,
-      },
-    ],
-  };
+        datasets: [
+            {
+                label: "Clientes Registrados",
+                data: {{ registros_por_fecha.data | safe }},
+                backgroundColor: "rgba(54, 162, 235, 0.5)",
+                borderColor: "rgba(54, 162, 235, 1)",
+                borderWidth: 1,
+            },
+        ],
+    };
 
     const clientesPorDiaConfig = {
         type: "bar",
@@ -91,25 +123,25 @@
     // Datos para Distribución de Premios
     const distribucionPremiosData = {
         labels: {{ premios_distribucion.labels| safe }},
-    datasets: [
-        {
-            data: {{ premios_distribucion.data | safe }},
-        backgroundColor: [
-            "rgba(255, 99, 132, 0.5)",
-            "rgba(54, 162, 235, 0.5)",
-            "rgba(255, 206, 86, 0.5)",
-            "rgba(75, 192, 192, 0.5)",
+        datasets: [
+            {
+                data: {{ premios_distribucion.data | safe }},
+                backgroundColor: [
+                    "rgba(255, 99, 132, 0.5)",
+                    "rgba(54, 162, 235, 0.5)",
+                    "rgba(255, 206, 86, 0.5)",
+                    "rgba(75, 192, 192, 0.5)",
+                ],
+                borderColor: [
+                    "rgba(255, 99, 132, 1)",
+                    "rgba(54, 162, 235, 1)",
+                    "rgba(255, 206, 86, 1)",
+                    "rgba(75, 192, 192, 1)",
+                ],
+                borderWidth: 1,
+            },
         ],
-        borderColor: [
-            "rgba(255, 99, 132, 1)",
-            "rgba(54, 162, 235, 1)",
-            "rgba(255, 206, 86, 1)",
-            "rgba(75, 192, 192, 1)",
-        ],
-        borderWidth: 1,
-      },
-    ],
-  };
+    };
 
     const distribucionPremiosConfig = {
         type: "doughnut",
@@ -127,4 +159,5 @@
         distribucionPremiosConfig
     );
 </script>
+
 {% endblock %}

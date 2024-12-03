@@ -1,19 +1,26 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container-fluid px-5 py-4">
+<div class="container-fluid px-4 py-4">
     <h2 class="text-center mb-4">Lista de Clientes</h2>
+    
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <a href="{% url 'crear_cliente' %}" class="btn btn-primary">Crear Cliente</a>
-        <button onclick="location.reload();" class="btn btn-secondary">Actualizar</button>
+        <a href="{% url 'crear_cliente' %}" class="btn btn-primary">
+            <i class="fas fa-user-plus"></i> Crear Cliente
+        </a>
+        <button onclick="location.reload();" class="btn btn-secondary">
+            <i class="fas fa-sync-alt"></i> Actualizar
+        </button>
     </div>
+    
     <div class="table-responsive">
-        <table class="table table-striped table-bordered align-middle text-center">
-            <thead class="bg-dark text-white">
+        <table class="table table-hover align-middle text-center">
+            <thead class="thead-dark">
                 <tr>
                     <th>Número de Documento</th>
                     <th>Nombre</th>
                     <th>Apellidos</th>
+                    <th>Teléfono</th>
                     <th>Número Factura</th>
                     <th>Acciones</th>
                 </tr>
@@ -24,11 +31,20 @@
                     <td>{{ cliente.cedula }}</td>
                     <td>{{ cliente.nombre }}</td>
                     <td>{{ cliente.apellidos }}</td>
+                    <td>{{ cliente.numero_telefono }}</td>
                     <td>{{ cliente.numero_factura }}</td>
                     <td>
-                        <a href="{% url 'editar_cliente' cliente.pk %}" class="btn btn-warning btn-sm">Editar</a>
-                        <a href="{% url 'eliminar_cliente' cliente.pk %}" class="btn btn-danger btn-sm">Eliminar</a>
+                        <a href="{% url 'editar_cliente' cliente.pk %}" class="btn btn-sm btn-outline-warning">
+                            <i class="fas fa-edit"></i> Editar
+                        </a>
+                        <a href="{% url 'eliminar_cliente' cliente.pk %}" class="btn btn-sm btn-outline-danger">
+                            <i class="fas fa-trash-alt"></i> Eliminar
+                        </a>
                     </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" class="text-muted">No hay clientes registrados.</td>
                 </tr>
                 {% endfor %}
             </tbody>

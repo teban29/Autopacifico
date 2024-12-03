@@ -1,11 +1,48 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>Crear Cliente</h2>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-primary">Guardar</button>
-    <a href="{% url 'clientes_crud' %}" class="btn btn-secondary">Cancelar</a>
-</form>
+<div class="container-fluid px-4 py-5">
+    <h2 class="text-center mb-4">Crear Cliente</h2>
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card p-4 shadow-sm">
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <!-- Form Fields in a single column -->
+                    <div class="form-group mb-4">
+                        <label for="{{ form.nombre.id_for_label }}" class="font-weight-bold">Nombre</label>
+                        {{ form.nombre }}
+                    </div>
+                    <div class="form-group mb-4">
+                        <label for="{{ form.apellidos.id_for_label }}" class="font-weight-bold">Apellidos</label>
+                        {{ form.apellidos }}
+                    </div>
+                    <div class="form-group mb-4">
+                        <label for="{{ form.cedula.id_for_label }}" class="font-weight-bold">Número de Documento</label>
+                        {{ form.cedula }}
+                    </div>
+                    <div class="form-group mb-4">
+                        <label for="{{ form.numero_telefono.id_for_label }}" class="font-weight-bold">Teléfono</label>
+                        {{ form.numero_telefono }}
+                    </div>
+                    <div class="form-group mb-4">
+                        <label for="{{ form.numero_factura.id_for_label }}" class="font-weight-bold">Número Factura</label>
+                        {{ form.numero_factura }}
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="d-flex justify-content-between mt-4">
+                        <button type="submit" class="btn btn-primary w-48">
+                            <i class="fas fa-save"></i> Guardar
+                        </button>
+                        <a href="{% url 'clientes_crud' %}" class="btn btn-outline-secondary w-48 text-right">
+                            <i class="fas fa-times"></i> Cancelar
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

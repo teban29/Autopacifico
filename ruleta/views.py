@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate
 from django.views import View
 from .forms import ClienteForm
 from .models import Cliente, Premio, Ganador
@@ -36,7 +37,6 @@ class RegistroClienteView(View):
             # Redirigir a la página de jugar con el cliente_id
             return redirect('jugar_ruleta', cliente_id=cliente.id)
         return render(request, 'ruleta/registro_cliente.html', {'form': form})
-
 
 
 @login_required(login_url='/ruleta/registro/')
@@ -222,7 +222,7 @@ class ClientesListView(UserPassesTestMixin, ListView):
 # Crear cliente
 class CrearClienteView(UserPassesTestMixin, CreateView):
     model = Cliente
-    fields = ['cedula', 'nombre', 'apellidos', 'numero_factura']
+    fields = ['cedula', 'nombre', 'apellidos', 'numero_telefono', 'numero_factura']
     template_name = 'admin/crear_cliente.html'
     success_url = reverse_lazy('clientes_crud')
 
@@ -232,7 +232,7 @@ class CrearClienteView(UserPassesTestMixin, CreateView):
 # Editar cliente
 class EditarClienteView(UserPassesTestMixin, UpdateView):
     model = Cliente
-    fields = ['cedula', 'nombre', 'apellidos', 'numero_factura']
+    fields = ['cedula', 'nombre', 'apellidos', 'numero_telefono','numero_factura']
     template_name = 'admin/editar_cliente.html'
     success_url = reverse_lazy('clientes_crud')
 

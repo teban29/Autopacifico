@@ -1,12 +1,20 @@
-{% extends 'base.html' %} {% block content %}
-<h2>¿Estás seguro de que deseas eliminar este ganador?</h2>
-<p>
-  <strong>{{ object.cliente.nombre }} {{ object.cliente.apellidos }}</strong> -
-  Premio: <strong>{{ object.premio.nombre }}</strong>
-</p>
-<form method="post">
-  {% csrf_token %}
-  <button type="submit" class="btn btn-danger">Eliminar</button>
-  <a href="{% url 'ganadores_crud' %}" class="btn btn-secondary">Cancelar</a>
-</form>
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">¿Estás seguro de que deseas eliminar este ganador?</h2>
+    <div class="text-center mb-4">
+        <p><strong>{{ object.cliente.nombre }} {{ object.cliente.apellidos }}</strong> - Premio: <strong>{{ object.premio.nombre }}</strong></p>
+    </div>
+    <div class="d-flex justify-content-center">
+        <form method="post">
+            {% csrf_token %}
+            <!-- Botones de acción -->
+            <div class="d-flex justify-content-between">
+                <button type="submit" class="btn btn-danger w-48">Eliminar</button>
+                <a href="{% url 'ganadores_crud' %}" class="btn btn-outline-secondary w-48">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
 {% endblock %}
