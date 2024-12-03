@@ -4,7 +4,8 @@ from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('registro/', views.RegistroClienteView.as_view(), name='registro_cliente'),
-    path('jugar/<int:cliente_id>/', views.jugar_ruleta, name='jugar_ruleta'),
+    path('jugar/<int:cliente_id>/', views.jugar_ruleta, name='jugar_ruleta'),  # Jugar con cliente_id
+    path('jugar/', views.jugar_ruleta, name='jugar_ruleta'),  # Jugar sin cliente_id
     path('guardar_resultado/', views.guardar_resultado, name='guardar_resultado'),
     
     path('logout/', auth_views.LogoutView.as_view(next_page='/'), name='logout'),  # Ruta para logout
@@ -16,6 +17,7 @@ urlpatterns = [
     path('admin/premios/editar/<int:pk>/', views.EditarPremioView.as_view(), name='editar_premio'),
     path('admin/premios/crear/', views.CrearPremioView.as_view(), name='crear_premio'),
     path('admin/premios/eliminar/<int:pk>/', views.EliminarPremioView.as_view(), name='eliminar_premio'),
+    path('premios/toggle/<int:pk>/', views.toggle_estado_premio, name='toggle_estado_premio'),
     
     
     # CRUD de clientes

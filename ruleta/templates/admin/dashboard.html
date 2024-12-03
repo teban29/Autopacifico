@@ -1,34 +1,130 @@
-{% extends "base.html" %}
-
-{% block title %}Dashboard{% endblock %}
-
+{% extends 'base.html' %} {% block title %}Dashboard{% endblock %}
 {% block content %}
-<div class="container">
-    <div class="row">
+<div class="container mt-4">
+    <h2 class="mb-4 text-center">Dashboard de Administración</h2>
+
+    <!-- Métricas rápidas -->
+    <div class="row g-4">
         <div class="col-md-4">
-            <div class="card text-white bg-primary mb-3">
+            <div class="card text-white bg-primary shadow">
                 <div class="card-body">
-                    <h5 class="card-title">Total Clientes</h5>
-                    <p class="card-text">{{ total_clientes }}</p>
+                    <h5 class="card-title">Total de Clientes</h5>
+                    <p class="card-text display-4">{{ total_clientes }}</p>
                 </div>
             </div>
         </div>
         <div class="col-md-4">
-            <div class="card text-white bg-success mb-3">
+            <div class="card text-white bg-success shadow">
                 <div class="card-body">
-                    <h5 class="card-title">Total Ganadores</h5>
-                    <p class="card-text">{{ total_ganadores }}</p>
+                    <h5 class="card-title">Total de Premios Entregados</h5>
+                    <p class="card-text display-4">{{ total_premios }}</p>
                 </div>
             </div>
         </div>
         <div class="col-md-4">
-            <div class="card text-white bg-warning mb-3">
+            <div class="card text-white bg-warning shadow">
                 <div class="card-body">
-                    <h5 class="card-title">Premios Entregados</h5>
-                    <p class="card-text">{{ premios_entregados }}</p>
+                    <h5 class="card-title">Premio Más Popular</h5>
+                    <p class="card-text">{{ premio_mas_popular }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gráficos -->
+    <div class="row g-4 mt-4">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">Clientes Registrados por Día</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="clientesPorDia"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header bg-danger text-white">
+                    <h5 class="mb-0">Distribución de Premios</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="distribucionPremios"></canvas>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Datos para Clientes por Día
+    const clientesPorDiaData = {
+        labels: {{ registros_por_fecha.labels| safe }},
+    datasets: [
+        {
+            label: "Clientes Registrados",
+            data: {{ registros_por_fecha.data | safe }},
+        backgroundColor: "rgba(54, 162, 235, 0.5)",
+        borderColor: "rgba(54, 162, 235, 1)",
+        borderWidth: 1,
+      },
+    ],
+  };
+
+    const clientesPorDiaConfig = {
+        type: "bar",
+        data: clientesPorDiaData,
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: false },
+            },
+        },
+    };
+
+    const clientesPorDiaChart = new Chart(
+        document.getElementById("clientesPorDia"),
+        clientesPorDiaConfig
+    );
+
+    // Datos para Distribución de Premios
+    const distribucionPremiosData = {
+        labels: {{ premios_distribucion.labels| safe }},
+    datasets: [
+        {
+            data: {{ premios_distribucion.data | safe }},
+        backgroundColor: [
+            "rgba(255, 99, 132, 0.5)",
+            "rgba(54, 162, 235, 0.5)",
+            "rgba(255, 206, 86, 0.5)",
+            "rgba(75, 192, 192, 0.5)",
+        ],
+        borderColor: [
+            "rgba(255, 99, 132, 1)",
+            "rgba(54, 162, 235, 1)",
+            "rgba(255, 206, 86, 1)",
+            "rgba(75, 192, 192, 1)",
+        ],
+        borderWidth: 1,
+      },
+    ],
+  };
+
+    const distribucionPremiosConfig = {
+        type: "doughnut",
+        data: distribucionPremiosData,
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { position: "top" },
+            },
+        },
+    };
+
+    const distribucionPremiosChart = new Chart(
+        document.getElementById("distribucionPremios"),
+        distribucionPremiosConfig
+    );
+</script>
 {% endblock %}

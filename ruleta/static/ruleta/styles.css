@@ -1,159 +1,112 @@
-/* General Reset */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-/* Body */
+/* Estilos generales */
 body {
-    font-family: 'Arial', sans-serif;
+    font-family: 'Roboto', sans-serif;
     background-color: #f8f9fa;
     color: #343a40;
     line-height: 1.6;
+    margin: 0;
+    padding: 0;
 }
 
-/* Sidebar */
-.sidebar {
-    width: 250px;
-    height: 100vh;
-    background: #343a40;
-    color: white;
-    position: fixed;
+/* Navbar */
+.navbar {
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.sidebar h4 {
+.navbar-brand {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-brand img {
+    margin-right: 10px;
+}
+
+.navbar .nav-link {
+    color: #343a40;
+    transition: color 0.3s ease;
+}
+
+.navbar .nav-link:hover {
+    color: #0056b3;
+}
+
+.navbar .nav-item.active .nav-link {
+    font-weight: bold;
+    color: #007bff !important;
+}
+
+/* Botones de la barra de navegación */
+.btn-outline-primary {
+    color: #007bff;
+    border-color: #007bff;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btn-outline-primary:hover {
+    background-color: #007bff;
+    color: #ffffff;
+}
+
+.btn-outline-danger {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btn-outline-danger:hover {
+    background-color: #dc3545;
+    color: #ffffff;
+}
+
+
+
+/* Título */
+h2 {
+    font-weight: bold;
+    color: #333333;
     text-align: center;
     margin-bottom: 30px;
-    font-weight: bold;
-    color: #f8f9fa;
 }
 
-.sidebar .nav-link {
-    color: #adb5bd;
-    margin: 10px 0;
-    font-size: 1rem;
-    transition: color 0.3s ease, background 0.3s ease;
-}
-
-.sidebar .nav-link:hover {
-    background: #495057;
-    color: white;
-    border-radius: 5px;
-}
-
-.sidebar .nav-link.active {
-    background: #007bff;
-    color: white;
-    border-radius: 5px;
-}
-
-.sidebar .btn {
-    font-size: 1rem;
-}
-
-/* Content Area */
-.content {
-    margin-left: 260px;
-    padding: 20px;
-    background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-/* Buttons */
-.btn-primary {
-    background-color: #007bff;
-    border: none;
+/* Botones generales */
+.btn-primary, .btn-secondary {
+    font-weight: 500;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .btn-primary:hover {
     background-color: #0056b3;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
-.btn-danger {
-    background-color: #dc3545;
-    border: none;
+.btn-secondary:hover {
+    background-color: #6c757d;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
-.btn-danger:hover {
-    background-color: #a71d2a;
+/* Footer */
+.footer {
+    background-color: #f8f9fa;
+    color: #343a40;
+    padding: 20px 0;
+    text-align: center;
+    margin-top: 40px;
+    border-top: 1px solid #dee2e6;
 }
 
-/* Table */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 20px 0;
-    font-size: 1rem;
+.footer a {
+    color: #007bff;
+    text-decoration: none;
 }
 
-table th, table td {
-    border: 1px solid #dee2e6;
-    padding: 10px;
-    text-align: left;
+.footer a:hover {
+    color: #0056b3;
+    text-decoration: underline;
 }
 
-table th {
-    background-color: #343a40;
-    color: white;
-}
-
-table tr:nth-child(even) {
-    background-color: #f2f2f2;
-}
-
-/* Form */
-form label {
-    font-weight: bold;
-    margin-top: 10px;
-    display: inline-block;
-}
-
-form input, form select, form textarea {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ced4da;
-    border-radius: 5px;
-}
-
-form button {
-    padding: 10px 20px;
-    border-radius: 5px;
-}
-
-/* Heading */
-h1, h2, h3, h4 {
-    margin-bottom: 20px;
-    font-weight: bold;
-}
-
-/* Alerts */
-.alert {
-    padding: 10px;
-    margin-bottom: 20px;
-    border-radius: 5px;
-}
-
-.alert-success {
-    background-color: #d4edda;
-    color: #155724;
-}
-
-.alert-danger {
-    background-color: #f8d7da;
-    color: #721c24;
-}
-
-/* Media Queries */
+/* Responsive */
 @media (max-width: 768px) {
-    .sidebar {
-        width: 100%;
+    .navbar-brand img {
+        width: 70px;
         height: auto;
-        position: relative;
-    }
-    .content {
-        margin-left: 0;
     }
 }

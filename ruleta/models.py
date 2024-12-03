@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.validators import RegexValidator
+from django.core.exceptions import ValidationError
 
 
 class Cliente(models.Model):
@@ -7,7 +9,18 @@ class Cliente(models.Model):
     cedula = models.CharField(max_length=20, unique=True)
     nombre = models.CharField(max_length=100)
     apellidos = models.CharField(max_length=100)
-    numero_factura = models.CharField(max_length=50, unique=True)
+    numero_telefono = models.CharField(max_length=15, null=True, blank=True)  # Nuevo campo
+    fecha_creacion = models.DateTimeField(auto_now_add=True)  # Fecha de creación
+    numero_factura = models.CharField(
+        max_length=50,
+        unique=True,
+        validators=[
+            RegexValidator(
+                r'^[A-Za-z0-9-]+$',
+                'El número de factura debe contener solo letras, números y guiones.'
+            )
+        ]
+    )
 
     def __str__(self):
         return f"{self.nombre} {self.apellidos} - {self.cedula}"
@@ -22,11 +35,23 @@ class Premio(models.Model):
     def __str__(self):
         return self.nombre
 
+    def is_active(self):
+        return self.estado
+
+    def clean(self):
+        if self.probabilidad < 0 or self.probabilidad > 100:
+            raise ValidationError("La probabilidad debe estar entre 0 y 100.")
+
 
 class Ganador(models.Model):
     cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
     premio = models.ForeignKey(Premio, on_delete=models.CASCADE)
     fecha = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        indexes = [
+            models.Index(fields=['fecha']),
+        ]
+
     def __str__(self):
-        return f"{self.cliente.nombre} {self.cliente.apellidos} - {self.premio.nombre}"
+        return f"{self.cliente.nombre} {self.cliente.apellidos} - {self.premio.nombre} (Ganado el {self.fecha.strftime('%Y-%m-%d')})"

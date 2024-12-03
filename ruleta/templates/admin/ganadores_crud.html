@@ -1,31 +1,32 @@
-{% extends 'base.html' %} {% block content %}
-<h2>Gestión de Ganadores</h2>
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Cliente</th>
-      <th>Premio</th>
-      <th>Fecha</th>
-      <th>Acciones</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for ganador in ganadores %}
-    <tr>
-      <td>{{ ganador.id }}</td>
-      <td>{{ ganador.cliente.nombre }} {{ ganador.cliente.apellidos }}</td>
-      <td>{{ ganador.premio.nombre }}</td>
-      <td>{{ ganador.fecha }}</td>
-      <td>
-        <a
-          href="{% url 'eliminar_ganador' ganador.id %}"
-          class="btn btn-danger btn-sm"
-          >Eliminar</a
-        >
-      </td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Lista de Ganadores</h2>
+    <div class="d-flex justify-content-end mb-4">
+        <button onclick="location.reload();" class="btn btn-secondary">Actualizar</button>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered align-middle text-center">
+            <thead class="bg-dark text-white">
+                <tr>
+                    <th>Cliente</th>
+                    <th>Premio</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for ganador in ganadores %}
+                <tr>
+                    <td>{{ ganador.cliente }}</td>
+                    <td>{{ ganador.premio }}</td>
+                    <td>
+                        <a href="{% url 'eliminar_ganador' ganador.pk %}" class="btn btn-danger btn-sm">Eliminar</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 {% endblock %}

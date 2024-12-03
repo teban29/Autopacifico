@@ -9,5 +9,6 @@ class ClienteForm(forms.ModelForm):
             'cedula': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Cédula'}),
             'nombre': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nombre'}),
             'apellidos': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Apellidos'}),
+            'telefono': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Telefono'}),
             'numero_factura': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Número de Factura'}),
         }

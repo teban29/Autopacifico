@@ -15,6 +15,11 @@ from django.contrib.auth.decorators import user_passes_test
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.decorators import user_passes_test
 from django.urls import reverse_lazy
+from django.views.decorators.http import require_POST
+from django.views.decorators.csrf import csrf_exempt
+from collections import Counter
+from django.db.models import Count
+from django.db.models.functions import TruncDay
 
 
 class RegistroClienteView(View):
@@ -36,10 +41,16 @@ class RegistroClienteView(View):
 
 @login_required(login_url='/ruleta/registro/')
 def jugar_ruleta(request, cliente_id=None):
-    if cliente_id is None:
-        messages.error(request, 'Por favor, regístrate para jugar')
+    # Verificar si el cliente_id es válido en la sesión
+    if not cliente_id:
+        cliente_id = request.session.get('cliente_id')
+    
+    # Si no hay cliente_id, redirigir al registro
+    if not cliente_id:
+        messages.error(request, 'Por favor, regístrate para jugar.')
         return redirect('registro_cliente')
 
+    # Verificar si el cliente existe en la base de datos
     try:
         cliente = Cliente.objects.get(id=cliente_id)
     except Cliente.DoesNotExist:
@@ -49,11 +60,13 @@ def jugar_ruleta(request, cliente_id=None):
     # Verificar si el cliente ya tiene un resultado
     resultado = request.session.get('resultado')
 
+    # Generar resultado si aún no existe
     if not resultado and request.method == 'POST':
         premios = Premio.objects.filter(estado=True).values('nombre', 'probabilidad')
         resultado = seleccionar_premio(premios)
         request.session['resultado'] = resultado
 
+        # Registrar ganador si el resultado no es "Gracias por participar"
         if resultado != "Gracias por participar":
             try:
                 premio = Premio.objects.get(nombre=resultado)
@@ -61,7 +74,9 @@ def jugar_ruleta(request, cliente_id=None):
             except Premio.DoesNotExist:
                 pass
 
+    # Renderizar la página de la ruleta
     return render(request, 'ruleta/jugar.html', {'cliente': cliente, 'resultado': resultado})
+
 
 
 
@@ -122,16 +137,41 @@ def redirect_to_admin_login(request):
 def superuser_required(view_func):
     return user_passes_test(lambda u: u.is_superuser)(view_func)
 
-# Dashboard para superusuarios
 @user_passes_test(lambda u: u.is_superuser, login_url='/admin/login/')
 def dashboard(request):
     total_clientes = Cliente.objects.count()
     total_ganadores = Ganador.objects.count()
-    premios_entregados = Ganador.objects.values('premio__nombre').count()
+
+    # Premio más popular
+    premios_populares = (
+        Ganador.objects.values('premio__nombre')
+        .annotate(count=Count('premio'))
+        .order_by('-count')
+    )
+    premio_mas_popular = premios_populares[0]['premio__nombre'] if premios_populares else "N/A"
+
+    # Clientes registrados por día
+    registros_por_fecha = Cliente.objects.annotate(date=TruncDay('fecha_creacion')).values('date').annotate(count=Count('id')).order_by('date')
+    registros_por_fecha_labels = [str(item['date']) for item in registros_por_fecha]
+    registros_por_fecha_data = [item['count'] for item in registros_por_fecha]
+
+    # Distribución de premios
+    premios_distribucion = Counter(Ganador.objects.values_list('premio__nombre', flat=True))
+    premios_labels = list(premios_distribucion.keys())
+    premios_data = list(premios_distribucion.values())
+
     context = {
         'total_clientes': total_clientes,
-        'total_ganadores': total_ganadores,
-        'premios_entregados': premios_entregados,
+        'total_premios': total_ganadores,
+        'premio_mas_popular': premio_mas_popular,
+        'registros_por_fecha': {
+            'labels': registros_por_fecha_labels,
+            'data': registros_por_fecha_data,
+        },
+        'premios_distribucion': {
+            'labels': premios_labels,
+            'data': premios_data,
+        },
     }
     return render(request, 'admin/dashboard.html', context)
 
@@ -231,3 +271,12 @@ class EliminarGanadorView(UserPassesTestMixin, DeleteView):
 
     def test_func(self):
         return self.request.user.is_superuser
+
+
+@require_POST
+@csrf_exempt
+def toggle_estado_premio(request, pk):
+    premio = get_object_or_404(Premio, pk=pk)
+    premio.estado = not premio.estado  # Cambia el estado del premio
+    premio.save()
+    return JsonResponse({'status': 'success'})
