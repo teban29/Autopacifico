@@ -24,6 +24,7 @@ urlpatterns = [
     path('admin/clientes/editar/<int:pk>/', views.EditarClienteView.as_view(), name='editar_cliente'),
     path('admin/clientes/eliminar/<int:pk>/', views.EliminarClienteView.as_view(), name='eliminar_cliente'),
 
-    path('admin/ganadores/', views.GanadoresListView.as_view(), name='ganadores_list'),
+    path('admin/ganadores/', views.GanadoresListView.as_view(), name='ganadores_crud'),
+    path('admin/ganadores/eliminar/<int:pk>/', views.EliminarGanadorView.as_view(), name='eliminar_ganador'),
     path('dashboard/', views.dashboard, name='dashboard'),
 ]

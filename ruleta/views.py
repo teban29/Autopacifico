@@ -208,9 +208,26 @@ class EliminarClienteView(UserPassesTestMixin, DeleteView):
     def test_func(self):
         return self.request.user.is_superuser
 
+
+
+#CRUD ganadores
+
+from django.urls import reverse_lazy
+
+# Listar ganadores
 class GanadoresListView(UserPassesTestMixin, ListView):
     model = Ganador
-    template_name = 'admin/ganadores_list.html'
+    template_name = 'admin/ganadores_crud.html'
+    context_object_name = 'ganadores'
+
+    def test_func(self):
+        return self.request.user.is_superuser
+
+# Eliminar ganador
+class EliminarGanadorView(UserPassesTestMixin, DeleteView):
+    model = Ganador
+    template_name = 'admin/eliminar_ganador.html'
+    success_url = reverse_lazy('ganadores_crud')
 
     def test_func(self):
         return self.request.user.is_superuser

@@ -1,0 +1,31 @@
+{% extends 'base.html' %} {% block content %}
+<h2>Gestión de Ganadores</h2>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Cliente</th>
+      <th>Premio</th>
+      <th>Fecha</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for ganador in ganadores %}
+    <tr>
+      <td>{{ ganador.id }}</td>
+      <td>{{ ganador.cliente.nombre }} {{ ganador.cliente.apellidos }}</td>
+      <td>{{ ganador.premio.nombre }}</td>
+      <td>{{ ganador.fecha }}</td>
+      <td>
+        <a
+          href="{% url 'eliminar_ganador' ganador.id %}"
+          class="btn btn-danger btn-sm"
+          >Eliminar</a
+        >
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

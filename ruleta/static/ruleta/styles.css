@@ -1,0 +1,159 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa;
+    color: #343a40;
+    line-height: 1.6;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    background: #343a40;
+    color: white;
+    position: fixed;
+}
+
+.sidebar h4 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-weight: bold;
+    color: #f8f9fa;
+}
+
+.sidebar .nav-link {
+    color: #adb5bd;
+    margin: 10px 0;
+    font-size: 1rem;
+    transition: color 0.3s ease, background 0.3s ease;
+}
+
+.sidebar .nav-link:hover {
+    background: #495057;
+    color: white;
+    border-radius: 5px;
+}
+
+.sidebar .nav-link.active {
+    background: #007bff;
+    color: white;
+    border-radius: 5px;
+}
+
+.sidebar .btn {
+    font-size: 1rem;
+}
+
+/* Content Area */
+.content {
+    margin-left: 260px;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: #007bff;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    border: none;
+}
+
+.btn-danger:hover {
+    background-color: #a71d2a;
+}
+
+/* Table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 1rem;
+}
+
+table th, table td {
+    border: 1px solid #dee2e6;
+    padding: 10px;
+    text-align: left;
+}
+
+table th {
+    background-color: #343a40;
+    color: white;
+}
+
+table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+/* Form */
+form label {
+    font-weight: bold;
+    margin-top: 10px;
+    display: inline-block;
+}
+
+form input, form select, form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+}
+
+form button {
+    padding: 10px 20px;
+    border-radius: 5px;
+}
+
+/* Heading */
+h1, h2, h3, h4 {
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+/* Alerts */
+.alert {
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+    }
+    .content {
+        margin-left: 0;
+    }
+}
