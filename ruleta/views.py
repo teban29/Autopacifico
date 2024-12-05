@@ -15,7 +15,7 @@ from django.contrib.auth.mixins import UserPassesTestMixin
 from django.contrib.auth.decorators import user_passes_test
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.decorators import user_passes_test
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
 from collections import Counter
@@ -31,42 +31,40 @@ class RegistroClienteView(View):
     def post(self, request):
         form = ClienteForm(request.POST)
         if form.is_valid():
-            cliente = form.save()  # Guardar el cliente en la base de datos
-            # Guardar el ID del cliente en la sesión (opcional)
+            cliente = form.save()
             request.session['cliente_id'] = cliente.id
-            # Redirigir a la página de jugar con el cliente_id
             return redirect('jugar_ruleta', cliente_id=cliente.id)
+        else:
+            messages.error(request, 'Error al registrar cliente. Verifica los datos ingresados.')
         return render(request, 'ruleta/registro_cliente.html', {'form': form})
 
 
+
+@login_required
+def obtener_premios(request):
+    premios = list(Premio.objects.filter(estado=True).values('nombre', 'probabilidad'))
+    return JsonResponse({'premios': premios})
+
 @login_required(login_url='/ruleta/registro/')
 def jugar_ruleta(request, cliente_id=None):
-    # Verificar si el cliente_id es válido en la sesión
-    if not cliente_id:
-        cliente_id = request.session.get('cliente_id')
-    
-    # Si no hay cliente_id, redirigir al registro
+    cliente_id = cliente_id or request.session.get('cliente_id')
     if not cliente_id:
         messages.error(request, 'Por favor, regístrate para jugar.')
         return redirect('registro_cliente')
 
-    # Verificar si el cliente existe en la base de datos
     try:
         cliente = Cliente.objects.get(id=cliente_id)
     except Cliente.DoesNotExist:
         messages.error(request, 'Cliente no válido. Por favor, regístrate.')
         return redirect('registro_cliente')
 
-    # Verificar si el cliente ya tiene un resultado
     resultado = request.session.get('resultado')
 
-    # Generar resultado si aún no existe
     if not resultado and request.method == 'POST':
         premios = Premio.objects.filter(estado=True).values('nombre', 'probabilidad')
         resultado = seleccionar_premio(premios)
         request.session['resultado'] = resultado
 
-        # Registrar ganador si el resultado no es "Gracias por participar"
         if resultado != "Gracias por participar":
             try:
                 premio = Premio.objects.get(nombre=resultado)
@@ -74,12 +72,7 @@ def jugar_ruleta(request, cliente_id=None):
             except Premio.DoesNotExist:
                 pass
 
-    # Renderizar la página de la ruleta
     return render(request, 'ruleta/jugar.html', {'cliente': cliente, 'resultado': resultado})
-
-
-
-
 
 
 
@@ -132,7 +125,8 @@ def guardar_resultado(request):
 
 
 def redirect_to_admin_login(request):
-    return redirect('/admin/login/')
+    return redirect('/admin/login/?next=/dashboard/')
+
 
 def superuser_required(view_func):
     return user_passes_test(lambda u: u.is_superuser)(view_func)

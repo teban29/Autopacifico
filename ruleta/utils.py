@@ -3,23 +3,28 @@ import random
 def seleccionar_premio(premios):
     """
     Selecciona un premio basado en probabilidades.
-    - premios: lista de diccionarios con 'nombre', 'probabilidad' y 'estado'.
-    Retorna el nombre del premio o "Sin premio".
+    
+    :param premios: Lista de diccionarios con clave 'nombre' y 'probabilidad'.
+    :return: Nombre del premio seleccionado o "Gracias por participar".
     """
-    opciones = []
+    # Crear una lista de probabilidades acumulativas
+    total = sum(p['probabilidad'] for p in premios)
+    if total == 0:
+        return "Gracias por participar"  # Evitar división por cero
+    
+    # Normalizar probabilidades si no suman exactamente 100
+    acumulativo = 0
+    probabilidades = []
     for premio in premios:
-        if premio['estado']:  # Solo considerar premios activos
-            opciones.append((premio['nombre'], premio['probabilidad']))
-    # Añadir casillas "Sin premio"
-    opciones.append(("Sin premio", 80))  # 80% de probabilidad
-    total = sum(p[1] for p in opciones)  # Sumar todas las probabilidades
-
-    # Generar un número aleatorio y seleccionar premio
-    numero = random.uniform(0, total)
-    acumulado = 0
-    for opcion, probabilidad in opciones:
-        acumulado += probabilidad
-        if numero <= acumulado:
-            return opcion
-    return "Sin premio"
-
+        acumulativo += premio['probabilidad'] / total
+        probabilidades.append((acumulativo, premio['nombre']))
+    
+    # Generar un número aleatorio entre 0 y 1
+    aleatorio = random.random()
+    
+    # Determinar el premio correspondiente
+    for prob, nombre in probabilidades:
+        if aleatorio <= prob:
+            return nombre
+    
+    return "Gracias por participar"
